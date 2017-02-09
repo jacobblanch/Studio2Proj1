@@ -16,7 +16,15 @@ public class BadboxController : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Friend")
+        if (collision.gameObject.tag == "Aaron")
+        {
+            Debug.Log("You Lose");
+        }
+        if (collision.gameObject.tag == "Travis")
+        {
+            Debug.Log("You Lose");
+        }
+        if (collision.gameObject.tag == "Wayne")
         {
             Debug.Log("You Lose");
         }

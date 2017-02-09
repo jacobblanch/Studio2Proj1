@@ -6,63 +6,86 @@ using UnityEngine.AI;
 public class FriendController : MonoBehaviour {
     private NavMeshAgent agent;
     public GameObject target;
-    public float speedincrease = 0.5f;
+    public float speedincrease = 0.1f;
     public float dist;
     private float nextTarget;
+    public GameObject me;
 
     // Use this for initialization
     void Start () {
         agent = GetComponent<NavMeshAgent>();
-        nextTarget = Random.Range(1, 3);
+        target = GameObject.FindGameObjectWithTag("P1");
         Patrolling();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(agent.remainingDistance);
         Patrolling();
-	}
+        agent.SetDestination(target.transform.position);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player") 
         {
-            target = GameObject.FindGameObjectWithTag("ReturnPoint");
+            target = GameObject.FindGameObjectWithTag("P3");
             agent.speed += speedincrease;
-            Debug.Log("Player");
         }
     }
 
     private void OnBecameInvisible()
     {
-        if (true)
-        {
-            target = GameObject.FindGameObjectWithTag("Bad");
-        }
+        target = GameObject.FindGameObjectWithTag("Bad");
     }
 
-    private void Patrolling()
+    public void Patrolling()
     {
-        Debug.Log(nextTarget);
-        if (agent.remainingDistance < 1)
+        if (agent.remainingDistance < 2)
         {
-             if (nextTarget == 1)
-             {
-                 nextTarget = 2;
-                 target = GameObject.FindGameObjectWithTag("P1");
-                agent.SetDestination(target.transform.position);
+            if (me.tag == "Aaron")
+            {
+                if (target.tag == "P1")
+                {
+                    target = GameObject.FindGameObjectWithTag("P2");
+                }
+                else if (target.tag == "P2")
+                {
+                    target = GameObject.FindGameObjectWithTag("P3");
+                }
+                else if (target.tag == "P3")
+                {
+                    target = GameObject.FindGameObjectWithTag("P1");
+                }
             }
-            else if (nextTarget == 2)
-             {
-                nextTarget = 3;
-                target = GameObject.FindGameObjectWithTag("P2");
-                agent.SetDestination(target.transform.position);
-            } 
-            else if (nextTarget == 3)
-             {
-                nextTarget = 1;
-                target = GameObject.FindGameObjectWithTag("P3");
-                agent.SetDestination(target.transform.position);
+            if (me.tag == "Travis")
+            {
+                if (target.tag == "P1")
+                {
+                    target = GameObject.FindGameObjectWithTag("P3");
+                }
+                else if (target.tag == "P2")
+                {
+                    target = GameObject.FindGameObjectWithTag("P1");
+                }
+                else if (target.tag == "P3")
+                {
+                    target = GameObject.FindGameObjectWithTag("P2");
+                }
+            }
+            if (me.tag == "Wayne")
+            {
+                if (target.tag == "P1")
+                {
+                    target = GameObject.FindGameObjectWithTag("P2");
+                }
+                else if (target.tag == "P2")
+                {
+                    target = GameObject.FindGameObjectWithTag("P1");
+                }
+                else if (target.tag == "P3")
+                {
+                    target = GameObject.FindGameObjectWithTag("P3");
+                }
             }
         }
     }
