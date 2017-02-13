@@ -6,13 +6,15 @@ using UnityEngine.AI;
 public class FriendController : MonoBehaviour {
     private NavMeshAgent agent;
     public GameObject target;
-    public float speedincrease = 0.1f;
-    public float dist;
+    public float annoyance;
     private float nextTarget;
-    public GameObject me;
+    public GameObject mygameObject;
+    public Rigidbody rb;
+    public float thrust = -500f;
 
     // Use this for initialization
     void Start () {
+        rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("P1");
         Patrolling();
@@ -20,17 +22,9 @@ public class FriendController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Annoyed();
         Patrolling();
         agent.SetDestination(target.transform.position);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player") 
-        {
-            target = GameObject.FindGameObjectWithTag("P3");
-            agent.speed += speedincrease;
-        }
     }
 
     private void OnBecameInvisible()
@@ -38,11 +32,60 @@ public class FriendController : MonoBehaviour {
         target = GameObject.FindGameObjectWithTag("Bad");
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                rb.AddForce(transform.forward * thrust);
+                if (mygameObject.tag == "Aaron")
+                {
+                    target = GameObject.FindGameObjectWithTag("P3");
+                    if (agent.remainingDistance <= 0.5)
+                    {
+                        Patrolling();
+                    }
+                } else if (mygameObject.tag == "Travis")
+                {
+                    target = GameObject.FindGameObjectWithTag("P2");
+                    if (agent.remainingDistance <= 0.5)
+                    {
+                        Patrolling();
+                    }
+                } else if (mygameObject.tag == "Wayne")
+                {
+                    target = GameObject.FindGameObjectWithTag("P1");
+                    if (agent.remainingDistance <= 0.5)
+                    {
+                        Patrolling();
+                    }
+                }
+                annoyance += 1;
+            }
+        } if (other.gameObject.tag == "Bad")
+        {
+            Debug.Log("You Lose");
+        }
+    }
+
+    public void Annoyed()
+    {
+        if (annoyance >= 20)
+        {
+            target = GameObject.FindGameObjectWithTag("PL");
+            if (agent.remainingDistance <= 0.5)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
     public void Patrolling()
     {
         if (agent.remainingDistance < 2)
         {
-            if (me.tag == "Aaron")
+            if (mygameObject.tag == "Aaron")
             {
                 if (target.tag == "P1")
                 {
@@ -57,7 +100,7 @@ public class FriendController : MonoBehaviour {
                     target = GameObject.FindGameObjectWithTag("P1");
                 }
             }
-            if (me.tag == "Travis")
+            if (mygameObject.tag == "Travis")
             {
                 if (target.tag == "P1")
                 {
@@ -72,7 +115,7 @@ public class FriendController : MonoBehaviour {
                     target = GameObject.FindGameObjectWithTag("P2");
                 }
             }
-            if (me.tag == "Wayne")
+            if (mygameObject.tag == "Wayne")
             {
                 if (target.tag == "P1")
                 {

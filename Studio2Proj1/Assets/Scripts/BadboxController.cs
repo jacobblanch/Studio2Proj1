@@ -14,19 +14,8 @@ public class BadboxController : MonoBehaviour {
 		
 	}
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Aaron")
-        {
-            Debug.Log("You Lose");
-        }
-        if (collision.gameObject.tag == "Travis")
-        {
-            Debug.Log("You Lose");
-        }
-        if (collision.gameObject.tag == "Wayne")
-        {
-            Debug.Log("You Lose");
-        }
+        Debug.Log("You Lose");
     }
 }
