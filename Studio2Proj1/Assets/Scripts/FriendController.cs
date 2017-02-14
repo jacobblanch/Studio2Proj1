@@ -7,129 +7,125 @@ public class FriendController : MonoBehaviour {
     private NavMeshAgent agent;
     public GameObject target;
     public float annoyance;
-    private float nextTarget;
     public GameObject mygameObject;
     public Rigidbody rb;
-    public float thrust = -500f;
+    public float thrust = -100f;
+    BadboxController badScript;
 
     // Use this for initialization
     void Start () {
+        GameObject theBox = GameObject.Find("BAD");
+        badScript = theBox.GetComponent<BadboxController>();
+        ReturnToOrigin();
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
-        target = GameObject.FindGameObjectWithTag("P1");
-        Patrolling();
     }
 	
 	// Update is called once per frame
 	void Update () {
+        badScript.RandGoFunction();
         Annoyed();
         Patrolling();
         agent.SetDestination(target.transform.position);
     }
 
-    private void OnBecameInvisible()
-    {
-        target = GameObject.FindGameObjectWithTag("Bad");
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                rb.AddForce(transform.forward * thrust);
-                if (mygameObject.tag == "Aaron")
-                {
-                    target = GameObject.FindGameObjectWithTag("P3");
-                    if (agent.remainingDistance <= 0.5)
-                    {
-                        Patrolling();
-                    }
-                } else if (mygameObject.tag == "Travis")
-                {
-                    target = GameObject.FindGameObjectWithTag("P2");
-                    if (agent.remainingDistance <= 0.5)
-                    {
-                        Patrolling();
-                    }
-                } else if (mygameObject.tag == "Wayne")
-                {
-                    target = GameObject.FindGameObjectWithTag("P1");
-                    if (agent.remainingDistance <= 0.5)
-                    {
-                        Patrolling();
-                    }
-                }
-                annoyance += 1;
-            }
-        } if (other.gameObject.tag == "Bad")
-        {
-            Debug.Log("You Lose");
-        }
-    }
-
     public void Annoyed()
     {
-        if (annoyance >= 20)
-        {
-            target = GameObject.FindGameObjectWithTag("PL");
-            if (agent.remainingDistance <= 0.5)
-            {
-                Destroy(this.gameObject);
-            }
-        }
+        
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        badScript.randGo = 100;
+        badScript.randFriend = Random.Range(1, 4);
+        badScript.randPoint = Random.Range(1, 5);
+        ReturnToOrigin();
     }
 
     public void Patrolling()
-    {
-        if (agent.remainingDistance < 2)
+    { 
+        if (badScript.randGo == 0.1f)
         {
-            if (mygameObject.tag == "Aaron")
+            if (badScript.randFriend == 1)
             {
-                if (target.tag == "P1")
+                if (mygameObject.tag == "Aaron")
                 {
-                    target = GameObject.FindGameObjectWithTag("P2");
+                    if (badScript.randPoint == 1)
+                    {
+                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                    } else if (badScript.randPoint == 2)
+                    {
+                        target = GameObject.FindGameObjectWithTag("FoodPoint");
+                    } else if (badScript.randPoint == 3)
+                    {
+                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                    }
+                    else if (badScript.randPoint == 4)
+                    {
+                        target = GameObject.FindGameObjectWithTag("Bad");
+                    }
+                    
                 }
-                else if (target.tag == "P2")
+            } else if (badScript.randFriend == 2)
+            {
+                if (mygameObject.tag == "Travis")
                 {
-                    target = GameObject.FindGameObjectWithTag("P3");
+                    if (badScript.randPoint == 1)
+                    {
+                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                    }
+                    else if (badScript.randPoint == 2)
+                    {
+                        target = GameObject.FindGameObjectWithTag("FoodPoint");
+                    }
+                    else if (badScript.randPoint == 3)
+                    {
+                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                    }
+                    else if (badScript.randPoint == 4)
+                    {
+                        target = GameObject.FindGameObjectWithTag("Bad");
+                    }
                 }
-                else if (target.tag == "P3")
+            } else if(badScript.randFriend == 3)
+            {
+                if (mygameObject.tag == "Wayne")
                 {
-                    target = GameObject.FindGameObjectWithTag("P1");
+                    if (badScript.randPoint == 1)
+                    {
+                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                    }
+                    else if (badScript.randPoint == 2)
+                    {
+                        target = GameObject.FindGameObjectWithTag("FoodPoint");
+                    }
+                    else if (badScript.randPoint == 3)
+                    {
+                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                    }
+                    else if (badScript.randPoint == 4)
+                    {
+                        target = GameObject.FindGameObjectWithTag("Bad");
+                    }
                 }
             }
-            if (mygameObject.tag == "Travis")
-            {
-                if (target.tag == "P1")
-                {
-                    target = GameObject.FindGameObjectWithTag("P3");
-                }
-                else if (target.tag == "P2")
-                {
-                    target = GameObject.FindGameObjectWithTag("P1");
-                }
-                else if (target.tag == "P3")
-                {
-                    target = GameObject.FindGameObjectWithTag("P2");
-                }
-            }
-            if (mygameObject.tag == "Wayne")
-            {
-                if (target.tag == "P1")
-                {
-                    target = GameObject.FindGameObjectWithTag("P2");
-                }
-                else if (target.tag == "P2")
-                {
-                    target = GameObject.FindGameObjectWithTag("P1");
-                }
-                else if (target.tag == "P3")
-                {
-                    target = GameObject.FindGameObjectWithTag("P3");
-                }
-            }
+        } else if (badScript.randGo > 0.1f)
+        {
+            ReturnToOrigin();
+        }
+    }
+
+    public void ReturnToOrigin()
+    {
+        if (mygameObject.tag == "Aaron")
+        {
+            target = GameObject.FindGameObjectWithTag("ARP");
+        } else if (mygameObject.tag == "Travis")
+        {
+            target = GameObject.FindGameObjectWithTag("TRP");
+        } else if (mygameObject.tag == "Wayne")
+        {
+            target = GameObject.FindGameObjectWithTag("WRP");
         }
     }
 }
