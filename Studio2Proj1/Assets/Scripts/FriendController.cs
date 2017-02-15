@@ -9,7 +9,6 @@ public class FriendController : MonoBehaviour {
     public GameObject mygameObject;
     public Rigidbody rb;
     BadboxController badScript;
-    float currFriends = 3;
 
     // Use this for initialization
     void Start () {
@@ -40,13 +39,13 @@ public class FriendController : MonoBehaviour {
             {
                 target = GameObject.FindGameObjectWithTag("PL");
             }
-        } else if (badScript.TravisAnnoyance >= 20)
+        } if (badScript.TravisAnnoyance >= 20)
         {
             if (mygameObject.tag == "Travis")
             {
                 target = GameObject.FindGameObjectWithTag("PL");
             }
-        } else if (badScript.WayneAnnoyance >= 20)
+        } if (badScript.WayneAnnoyance >= 20)
         {
             if (mygameObject.tag == "Wayne")
             {
@@ -60,7 +59,7 @@ public class FriendController : MonoBehaviour {
         if (other.tag == "PL")
         {
             Destroy(this.gameObject);
-            currFriends--;
+            badScript.currFriends--;
         }
         if(other.tag != "Player")
         {
@@ -154,13 +153,22 @@ public class FriendController : MonoBehaviour {
     {
         if (mygameObject.tag == "Aaron")
         {
-            target = GameObject.FindGameObjectWithTag("ARP");
+            if (badScript.AaronAnnoyance < 20)
+            {
+                target = GameObject.FindGameObjectWithTag("ARP");
+            }
         } else if (mygameObject.tag == "Travis")
         {
-            target = GameObject.FindGameObjectWithTag("TRP");
+            if (badScript.TravisAnnoyance < 20)
+            {
+                target = GameObject.FindGameObjectWithTag("TRP");
+            }
         } else if (mygameObject.tag == "Wayne")
         {
-            target = GameObject.FindGameObjectWithTag("WRP");
+            if (badScript.WayneAnnoyance < 20)
+            {
+                target = GameObject.FindGameObjectWithTag("WRP");
+            }
         }
         
     }

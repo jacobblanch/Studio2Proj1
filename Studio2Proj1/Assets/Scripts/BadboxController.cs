@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BadboxController : MonoBehaviour {
 
@@ -10,9 +11,12 @@ public class BadboxController : MonoBehaviour {
     public float AaronAnnoyance;
     public float TravisAnnoyance;
     public float WayneAnnoyance;
+    public float timeAway;
+    public float currFriends = 3;
 
     // Use this for initialization
     void Start () {
+        
         randPoint = Random.Range(1, 5);
         randGo = 100;
         randFriend = Random.Range(1,4);
@@ -21,23 +25,31 @@ public class BadboxController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        PlayerAway();
         RandGoFunction();
         if (Time.timeSinceLevelLoad == 300)
         {
-            //You Win
+            SceneManager.LoadScene("YouLastedTheVisit");
+        }
+        if (currFriends == 0)
+        {
+            SceneManager.LoadScene("YouHaveNoFriends");
         }
 	}
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("You Lose");
+        if (other.gameObject.tag != "Player")
+        {
+            SceneManager.LoadScene("YourFriendsFoundYourDadsSecret");
+        }
     }
 
     public void RandGoFunction()
     {
         if (randGo > 1)
         {
-            randGo = Random.Range(1, 1001);
+            randGo = Random.Range(1, 1501);
             randPoint = Random.Range(1, 5);
             randFriend = Random.Range(1, 4);
         }
@@ -64,6 +76,24 @@ public class BadboxController : MonoBehaviour {
             {
                 WayneAnnoyance++;
             }
+        }
+    }
+
+    public void PlayerAway()
+    {
+        if (Vector3.Distance(GameObject.Find("PlayerAnchor").transform.position, GameObject.Find("Player").transform.position) > 2)
+        {
+            timeAway += Time.deltaTime;
+            if (timeAway > 2)
+            {
+                TravisAnnoyance++;
+                WayneAnnoyance++;
+                AaronAnnoyance++;
+                timeAway = 1;
+            }
+        } else
+        {
+            timeAway = 0;
         }
     }
 }

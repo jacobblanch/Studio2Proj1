@@ -23,4 +23,8 @@ public class UI_Button : MonoBehaviour {
     {
         Application.Quit();
     }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
