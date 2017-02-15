@@ -7,6 +7,9 @@ public class BadboxController : MonoBehaviour {
     public float randGo;
     public float randPoint;
     public float randFriend;
+    public float AaronAnnoyance;
+    public float TravisAnnoyance;
+    public float WayneAnnoyance;
 
     // Use this for initialization
     void Start () {
@@ -21,7 +24,7 @@ public class BadboxController : MonoBehaviour {
         RandGoFunction();
         if (Time.timeSinceLevelLoad == 300)
         {
-            //You Lose
+            //You Win
         }
 	}
 
@@ -32,19 +35,35 @@ public class BadboxController : MonoBehaviour {
 
     public void RandGoFunction()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            randGo = 100;
-            randPoint = Random.Range(1, 5);
-            randFriend = Random.Range(1, 4);
-        }
         if (randGo > 1)
         {
             randGo = Random.Range(1, 1001);
+            randPoint = Random.Range(1, 5);
+            randFriend = Random.Range(1, 4);
         }
         else if (randGo <= 1)
         {
             randGo = 1;
+            AnnoyFriend();
+        }
+    }
+
+    public void AnnoyFriend()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if(randFriend == 1)
+            {
+                AaronAnnoyance++;
+            }
+            if(randFriend == 2)
+            {
+                TravisAnnoyance++;
+            }
+            if(randFriend == 3)
+            {
+                WayneAnnoyance++;
+            }
         }
     }
 }

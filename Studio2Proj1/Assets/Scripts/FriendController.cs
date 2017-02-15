@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class FriendController : MonoBehaviour {
     private NavMeshAgent agent;
     public GameObject target;
-    public float annoyance;
     public GameObject mygameObject;
     public Rigidbody rb;
     BadboxController badScript;
@@ -27,34 +26,33 @@ public class FriendController : MonoBehaviour {
         Annoyed();
         Patrolling();
         agent.SetDestination(target.transform.position);
+        if (Input.GetMouseButtonDown(0))
+        {
+            ResetGlobalVar();
+        }
     }
 
     public void Annoyed()
     {
-            if (Input.GetMouseButtonDown(0))
+        if (badScript.AaronAnnoyance >= 20)
+        {
+            if (mygameObject.tag == "Aaron")
             {
-                if (badScript.randFriend == 1)
-                {
-                    if (mygameObject.tag == "Aaron")
-                    {
-                        annoyance++;
-                    }
-                }
-                else if (badScript.randFriend == 2)
-                {
-                    if (mygameObject.tag == "Travis")
-                    {
-                        annoyance++;
-                    }
-                }
-                else if (badScript.randFriend == 3)
-                {
-                    if (mygameObject.tag == "Wayne")
-                    {
-                        annoyance++;
-                    }
-                }
+                target = GameObject.FindGameObjectWithTag("PL");
             }
+        } else if (badScript.TravisAnnoyance >= 20)
+        {
+            if (mygameObject.tag == "Travis")
+            {
+                target = GameObject.FindGameObjectWithTag("PL");
+            }
+        } else if (badScript.WayneAnnoyance >= 20)
+        {
+            if (mygameObject.tag == "Wayne")
+            {
+                target = GameObject.FindGameObjectWithTag("PL");
+            }
+        }
     }
 
     public void OnTriggerEnter(Collider other)
@@ -64,82 +62,91 @@ public class FriendController : MonoBehaviour {
             Destroy(this.gameObject);
             currFriends--;
         }
-        badScript.randGo = 100;
-        badScript.randFriend = Random.Range(1, 4);
-        badScript.randPoint = Random.Range(1, 5);
+        if(other.tag != "Player")
+        {
+            ResetGlobalVar();
+        }
         ReturnToOrigin();
     }
 
     public void Patrolling()
     { 
-        if (badScript.randGo == 1)
+        if(badScript.AaronAnnoyance < 20 && badScript.TravisAnnoyance < 20 && badScript.WayneAnnoyance < 20)
         {
-            if (badScript.randFriend == 1)
+            if (badScript.randGo == 1)
             {
-                if (mygameObject.tag == "Aaron")
+                if (badScript.randFriend == 1)
                 {
-                    if (badScript.randPoint == 1)
+                    if (mygameObject.tag == "Aaron")
                     {
-                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
-                    } else if (badScript.randPoint == 2)
-                    {
-                        target = GameObject.FindGameObjectWithTag("FoodPoint");
-                    } else if (badScript.randPoint == 3)
-                    {
-                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
-                    }
-                    else if (badScript.randPoint == 4)
-                    {
-                        target = GameObject.FindGameObjectWithTag("Bad");
-                    }
-                    
-                }
-            } else if (badScript.randFriend == 2)
-            {
-                if (mygameObject.tag == "Travis")
-                {
-                    if (badScript.randPoint == 1)
-                    {
-                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
-                    }
-                    else if (badScript.randPoint == 2)
-                    {
-                        target = GameObject.FindGameObjectWithTag("FoodPoint");
-                    }
-                    else if (badScript.randPoint == 3)
-                    {
-                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
-                    }
-                    else if (badScript.randPoint == 4)
-                    {
-                        target = GameObject.FindGameObjectWithTag("Bad");
+                        if (badScript.randPoint == 1)
+                        {
+                            target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                        }
+                        else if (badScript.randPoint == 2)
+                        {
+                            target = GameObject.FindGameObjectWithTag("FoodPoint");
+                        }
+                        else if (badScript.randPoint == 3)
+                        {
+                            target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                        }
+                        else if (badScript.randPoint == 4)
+                        {
+                            target = GameObject.FindGameObjectWithTag("Bad");
+                        }
+
                     }
                 }
-            } else if(badScript.randFriend == 3)
-            {
-                if (mygameObject.tag == "Wayne")
+                else if (badScript.randFriend == 2)
                 {
-                    if (badScript.randPoint == 1)
+                    if (mygameObject.tag == "Travis")
                     {
-                        target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                        if (badScript.randPoint == 1)
+                        {
+                            target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                        }
+                        else if (badScript.randPoint == 2)
+                        {
+                            target = GameObject.FindGameObjectWithTag("FoodPoint");
+                        }
+                        else if (badScript.randPoint == 3)
+                        {
+                            target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                        }
+                        else if (badScript.randPoint == 4)
+                        {
+                            target = GameObject.FindGameObjectWithTag("Bad");
+                        }
                     }
-                    else if (badScript.randPoint == 2)
+                }
+                else if (badScript.randFriend == 3)
+                {
+                    if (mygameObject.tag == "Wayne")
                     {
-                        target = GameObject.FindGameObjectWithTag("FoodPoint");
-                    }
-                    else if (badScript.randPoint == 3)
-                    {
-                        target = GameObject.FindGameObjectWithTag("DrinkPoint");
-                    }
-                    else if (badScript.randPoint == 4)
-                    {
-                        target = GameObject.FindGameObjectWithTag("Bad");
+                        if (badScript.randPoint == 1)
+                        {
+                            target = GameObject.FindGameObjectWithTag("ToiletPoint");
+                        }
+                        else if (badScript.randPoint == 2)
+                        {
+                            target = GameObject.FindGameObjectWithTag("FoodPoint");
+                        }
+                        else if (badScript.randPoint == 3)
+                        {
+                            target = GameObject.FindGameObjectWithTag("DrinkPoint");
+                        }
+                        else if (badScript.randPoint == 4)
+                        {
+                            target = GameObject.FindGameObjectWithTag("Bad");
+                        }
                     }
                 }
             }
-        } else if (badScript.randGo > 1)
-        {
-            ReturnToOrigin();
+            else if (badScript.randGo > 1)
+            {
+                ReturnToOrigin();
+            }
         }
     }
 
@@ -155,9 +162,13 @@ public class FriendController : MonoBehaviour {
         {
             target = GameObject.FindGameObjectWithTag("WRP");
         }
-        if (annoyance >= 2)
-        {
-            target = GameObject.FindGameObjectWithTag("PL");
-        }
+        
+    }
+
+    public void ResetGlobalVar()
+    {
+        badScript.randGo = 100;
+        badScript.randPoint = Random.Range(1, 4);
+        badScript.randFriend = Random.Range(1, 4);
     }
 }
