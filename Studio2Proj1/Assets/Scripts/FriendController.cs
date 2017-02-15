@@ -44,7 +44,7 @@ public class FriendController : MonoBehaviour {
 
     public void Patrolling()
     { 
-        if (badScript.randGo == 0.1f)
+        if (badScript.randGo == 1)
         {
             if (badScript.randFriend == 1)
             {
@@ -109,7 +109,7 @@ public class FriendController : MonoBehaviour {
                     }
                 }
             }
-        } else if (badScript.randGo > 0.1f)
+        } else if (badScript.randGo > 1)
         {
             ReturnToOrigin();
         }

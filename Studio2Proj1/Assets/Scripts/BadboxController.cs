@@ -34,13 +34,13 @@ public class BadboxController : MonoBehaviour {
             randPoint = Random.Range(1, 5);
             randFriend = Random.Range(1, 4);
         }
-        if (randGo >= 0.2)
+        if (randGo > 1)
         {
-            randGo = Random.Range(0.1f, 100f);
+            randGo = Random.Range(1, 1001);
         }
-        else if (randGo < 0.2)
+        else if (randGo <= 1)
         {
-            randGo = 0.1f;
+            randGo = 1;
         }
     }
 }
