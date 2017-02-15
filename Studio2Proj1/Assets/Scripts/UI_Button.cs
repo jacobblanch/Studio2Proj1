@@ -7,11 +7,15 @@ using UnityEngine.UI;
 public class UI_Button : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-	}
+	void Start ()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
 		
 	}
 
