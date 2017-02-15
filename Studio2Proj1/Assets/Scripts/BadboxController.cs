@@ -19,6 +19,10 @@ public class BadboxController : MonoBehaviour {
 	void Update ()
     {
         RandGoFunction();
+        if (Time.timeSinceLevelLoad == 300)
+        {
+            //You Lose
+        }
 	}
 
     private void OnTriggerEnter(Collider other)

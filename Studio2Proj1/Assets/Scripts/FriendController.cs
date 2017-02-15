@@ -9,8 +9,8 @@ public class FriendController : MonoBehaviour {
     public float annoyance;
     public GameObject mygameObject;
     public Rigidbody rb;
-    public float thrust = -100f;
     BadboxController badScript;
+    float currFriends = 3;
 
     // Use this for initialization
     void Start () {
@@ -31,11 +31,39 @@ public class FriendController : MonoBehaviour {
 
     public void Annoyed()
     {
-        
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (badScript.randFriend == 1)
+                {
+                    if (mygameObject.tag == "Aaron")
+                    {
+                        annoyance++;
+                    }
+                }
+                else if (badScript.randFriend == 2)
+                {
+                    if (mygameObject.tag == "Travis")
+                    {
+                        annoyance++;
+                    }
+                }
+                else if (badScript.randFriend == 3)
+                {
+                    if (mygameObject.tag == "Wayne")
+                    {
+                        annoyance++;
+                    }
+                }
+            }
     }
 
     public void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "PL")
+        {
+            Destroy(this.gameObject);
+            currFriends--;
+        }
         badScript.randGo = 100;
         badScript.randFriend = Random.Range(1, 4);
         badScript.randPoint = Random.Range(1, 5);
@@ -126,6 +154,10 @@ public class FriendController : MonoBehaviour {
         } else if (mygameObject.tag == "Wayne")
         {
             target = GameObject.FindGameObjectWithTag("WRP");
+        }
+        if (annoyance >= 2)
+        {
+            target = GameObject.FindGameObjectWithTag("PL");
         }
     }
 }
